@@ -30,7 +30,7 @@ const createCloudfrontInvalidation = (distributionId, filename) => {
         const params = {
             DistributionId: distributionId,
             InvalidationBatch: {
-                CallerReference: 'STRING_VALUE',
+                CallerReference: (new Date()).toTimeString(),
                 Paths: {
                     Quantity: '1',
                     Items: [
