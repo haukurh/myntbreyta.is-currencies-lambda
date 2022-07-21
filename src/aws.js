@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk');
 AWS.config.update({region: 'eu-west-1'});
 const s3 = new AWS.S3();
+const cloudfront = new AWS.CloudFront();
 
 const saveToS3 = (payload, bucket, filename) => {
     return new Promise((resolve, reject) => {
@@ -12,16 +13,45 @@ const saveToS3 = (payload, bucket, filename) => {
             CacheControl: 'public,max-age=86400',
             ContentType: 'application/json',
         };
-        s3.putObject(s3params, (AWSError) => {
+        s3.putObject(s3params, (AWSError, object) => {
             if (AWSError) {
                 console.error(AWSError, AWSError.stack);
                 reject(AWSError);
             } else {
                 console.debug(`${filename} uploaded to AWS S3`);
-                resolve(true);
+                resolve(object);
             }
         });
     });
-}
+};
 
-module.exports = { saveToS3 };
+const createCloudfrontInvalidation = (distributionId, filename) => {
+    return new Promise((resolve, reject) => {
+        const params = {
+            DistributionId: distributionId,
+            InvalidationBatch: {
+                CallerReference: 'STRING_VALUE',
+                Paths: {
+                    Quantity: '1',
+                    Items: [
+                        `/${filename}`,
+                    ]
+                }
+            }
+        };
+        cloudfront.createInvalidation(params, (AWSError, data) => {
+            if (AWSError) {
+                console.error(AWSError, AWSError.stack);
+                reject(AWSError);
+            } else {
+                console.log(`CloudFront Invalidation request created for '${filename}'`);
+                resolve(data);
+            }
+        });
+    });
+};
+
+module.exports = {
+    saveToS3,
+    createCloudfrontInvalidation,
+};
