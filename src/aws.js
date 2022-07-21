@@ -2,10 +2,7 @@ const AWS = require('aws-sdk');
 AWS.config.update({region: 'eu-west-1'});
 const s3 = new AWS.S3();
 
-const filename = 'currency-rates.json';
-const bucket = process.env.bucket;
-
-const saveToS3 = (payload) => {
+const saveToS3 = (payload, bucket, filename) => {
     return new Promise((resolve, reject) => {
         console.debug('Uploading to S3...');
         const s3params = {
@@ -13,7 +10,7 @@ const saveToS3 = (payload) => {
             Bucket: bucket,
             Key: filename,
         };
-        s3.putObject(s3params, (AWSError, payload) => {
+        s3.putObject(s3params, (AWSError) => {
             if (AWSError) {
                 console.error(AWSError, AWSError.stack);
                 reject(AWSError);
