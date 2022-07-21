@@ -9,6 +9,8 @@ const saveToS3 = (payload, bucket, filename) => {
             Body: JSON.stringify(payload),
             Bucket: bucket,
             Key: filename,
+            CacheControl: 'public,max-age=86400',
+            ContentType: 'application/json',
         };
         s3.putObject(s3params, (AWSError) => {
             if (AWSError) {
