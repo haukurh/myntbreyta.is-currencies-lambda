@@ -5,6 +5,8 @@ const cloudfront = new AWS.CloudFront();
 
 const saveToS3 = (payload, bucket, filename) => {
     return new Promise((resolve, reject) => {
+        const expireDate = new Date();
+        expireDate.setDate(expireDate.getDate() + 1);
         console.debug('Uploading to S3...');
         const s3params = {
             Body: JSON.stringify(payload),
@@ -12,6 +14,7 @@ const saveToS3 = (payload, bucket, filename) => {
             Key: filename,
             CacheControl: 'public,max-age=86400',
             ContentType: 'application/json',
+            Expires: expireDate,
         };
         s3.putObject(s3params, (AWSError, object) => {
             if (AWSError) {
