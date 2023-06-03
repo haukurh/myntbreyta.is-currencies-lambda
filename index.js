@@ -8,8 +8,8 @@ const bucket = process.env.bucket;
 const url = process.env.borgun_xml_url;
 const distributionId = process.env.cloudfront_id;
 
-const main = () => {
-    fetch(url)
+exports.handler = async(event) => {
+    await fetch(url)
         .then((data) => parseXml(data))
         .then((xml) => parseBorgunData(xml))
         .then((payload) => saveToS3(payload, bucket, filename))
@@ -20,5 +20,3 @@ const main = () => {
             });
         });
 };
-
-main();
