@@ -1,0 +1,34 @@
+name: Deploy lambda
+
+on:
+  push:
+    tags:
+      - 'v\d+\.\d+\.\d+'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: 'Deploy lambda'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Install dependencies
+        run: yarn install --production
+
+      - name: Zip the code for deployment
+        run: zip -r lambda-borgun.zip . -x ".git/*"
+
+      - name: Deploy lambda code to AWS
+        run: aws lambda update-function-code --function-name ${{ vars.LAMBDA_NAME }} --zip-file fileb://lambda-borgun.zip
+
+      - name: Invoke lambda
+        run: aws lambda invoke --function-name ${{ vars.LAMBDA_NAME }} --log-type Tail --query 'LogResult' --output text /dev/null | base64 -d
