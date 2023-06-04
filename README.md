@@ -56,7 +56,28 @@ Test that everything works
 aws lambda invoke --function-name lambda-borgun --log-type Tail --query 'LogResult' --output text /dev/null | base64 -d
 ```
 
+### Creating a scheduled event with EventBridge
+
+```shell
+aws events put-rule --name lambda-borgun-scheduled-rule --schedule-expression 'cron(45 06 * * ? *)'
+```
+
+```shell
+aws lambda add-permission \
+    --function-name lambda-borgun \
+    --statement-id lambda-borgun-scheduled-event \
+    --action 'lambda:InvokeFunction' \
+    --principal events.amazonaws.com \
+    --source-arn arn:aws:events:eu-west-1:<AWS_ACCOUNT_ID>:rule/lambda-borgun-scheduled-rule
+```
+
+```shell
+aws events put-targets --rule lambda-borgun-scheduled-rule --targets '[{"Id": "1","Arn": "arn:aws:lambda:eu-west-1:<AWS_ACCOUNT_ID>:function:lambda-borgun"}]'
+```
+
 ## Sources
 
 - [docs.aws.amazon.com: Using Lambda with the AWS CLI](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-awscli.html)
 - [docs.aws.amazon.com: Deploy Node.js Lambda functions with .zip file archives](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-package.html)
+- [docs.aws.amazon.com: Schedule expressions using rate or cron](https://docs.aws.amazon.com/lambda/latest/dg/services-cloudwatchevents-expressions.html)
+- [docs.aws.amazon.com: Schedule AWS Lambda functions using EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-run-lambda-schedule.html)
