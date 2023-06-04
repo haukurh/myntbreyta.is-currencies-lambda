@@ -9,6 +9,7 @@ const url = process.env.borgun_xml_url;
 const distributionId = process.env.cloudfront_id;
 
 exports.handler = async(event) => {
+    console.log('Fetching data');
     await fetch(url)
         .then((data) => parseXml(data))
         .then((xml) => parseBorgunData(xml))

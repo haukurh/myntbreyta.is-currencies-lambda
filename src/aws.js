@@ -8,7 +8,7 @@ const saveToS3 = (payload, bucket, filename) => {
     return new Promise((resolve, reject) => {
         const expireDate = new Date();
         expireDate.setDate(expireDate.getDate() + 1);
-        console.debug('Uploading to S3...');
+        console.log('Uploading to S3...');
         const command = new PutObjectCommand({
             Body: JSON.stringify(payload),
             Bucket: bucket,
@@ -20,7 +20,7 @@ const saveToS3 = (payload, bucket, filename) => {
 
         s3.send(command)
             .then((data) => {
-                console.debug(`${filename} uploaded to AWS S3`);
+                console.log(`${filename} uploaded to AWS S3`);
                 resolve(data);
             })
             .catch((error) => {

@@ -21,6 +21,7 @@ const parseBorgunData = async (data) => {
     return new Promise((resolve, reject) => {
         try {
             validatePayload(data);
+            console.log('Parsing data and saving as JSON');
             resolve({
                 updatedAt: new Date(),
                 rates: data.Rates.Rate.map((rate) => {
