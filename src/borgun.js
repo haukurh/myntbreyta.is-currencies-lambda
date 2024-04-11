@@ -22,15 +22,13 @@ const parseBorgunData = async (data) => {
         try {
             validatePayload(data);
             console.log('Parsing data and saving as JSON');
-            resolve({
-                updatedAt: new Date(),
-                rates: data.Rates.Rate.map((rate) => {
-                    delete rate['GroupNo'];
-                    delete rate['RateDate'];
-                    delete rate['CurrencyNum'];
-                    return rate;
-                }),
+            const rates = {};
+            data.Rates.Rate.forEach(rate => {
+              if (!(rate['CurrencyCode'] in rates)) {
+                rates[rate['CurrencyCode']] = rate['CurrencyRate'];
+              }
             });
+            resolve(rates);
         } catch (e) {
             reject(e);
         }
