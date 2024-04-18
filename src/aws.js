@@ -13,7 +13,6 @@ const saveToS3 = (payload, bucket, filename) => {
             Body: JSON.stringify(payload),
             Bucket: bucket,
             Key: filename,
-            CacheControl: 'public,max-age=86400',
             ContentType: 'application/json',
             Expires: expireDate,
         });
