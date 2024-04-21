@@ -29,7 +29,7 @@ aws iam attach-role-policy --role-name myntbreyta-is-currencies-lambda --policy-
 Add a custom policy to the role to allow the lambda to update the object in our S3 and create a CloudFront invalidation
 
 ```shell
-aws iam put-role-policy --role-name myntbreyta-is-currencies-lambda --policy-name allow-s3-cf-invalidation --policy-document '{"Version":"2012-10-17","Statement":[{"Action":"cloudfront:CreateInvalidation","Effect":"Allow","Resource":"arn:aws:cloudfront::<AWS_ACCOUNT_ID>:distribution/<CLOUDFRONT_ID>"},{"Action":["s3:PutObject","s3:GetObject","s3:ListBucket","s3:DeleteObject"],"Effect":"Allow","Resource":"arn:aws:s3:::<S3_BUCKET_ID>/currency-rates.json"}]}'
+aws iam put-role-policy --role-name myntbreyta-is-currencies-lambda --policy-name allow-myntbreyta-s3-upload --policy-document '{"Version":"2012-10-17","Statement":[{"Action":["s3:PutObject","s3:GetObject","s3:ListBucket","s3:DeleteObject"],"Effect":"Allow","Resource":"arn:aws:s3:::<S3_BUCKET_ID>/currency-rates.json"}]}'
 ```
 
 Prepare the code to create our new lambda
