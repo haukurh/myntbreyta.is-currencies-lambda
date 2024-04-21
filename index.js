@@ -7,7 +7,7 @@ const bucket = process.env.bucket;
 const url = process.env.xml_url;
 
 exports.handler = async(event) => {
-    console.log('Fetching data');
+    console.log(`Fetching data from '${url}'`);
     await fetch(url)
         .then((data) => parseXml(data))
         .then((payload) => saveToS3(payload, bucket, filename))
