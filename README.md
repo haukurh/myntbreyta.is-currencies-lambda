@@ -1,6 +1,6 @@
 # myntbreyta.is-currencies-lambda
 
-A small AWS lambda function that fetches currency conversions in XML from credit-card vendor in Iceland,
+A small AWS lambda function that fetches currency rates in XML format from a credit-card vendor in Iceland,
 parses the data then stores it in an AWS S3 bucket for [myntbreyta.is](https://myntbreyta.is) to use.
 
 ## ToDo
