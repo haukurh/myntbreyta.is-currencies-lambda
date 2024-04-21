@@ -5,7 +5,7 @@ parses the data then stores it in an AWS S3 bucket for [myntbreyta.is](https://m
 
 ## ToDo
 
-- [ ] Validate env variables before starting
+- [x] Validate env variables before starting
 
 ## Prerequisite
 

@@ -2,6 +2,14 @@ const { fetch } = require('./src/fetch');
 const { parseXml } = require('./src/xml');
 const { saveToS3 } = require('./src/aws');
 
+if (!('bucket' in process.env)) {
+  throw new Error("'bucket' environment variable missing");
+}
+
+if (!('xml_url' in process.env)) {
+  throw new Error("'xml_url' environment variable missing");
+}
+
 const filename = 'currency-rates.json';
 const bucket = process.env.bucket;
 const url = process.env.xml_url;
