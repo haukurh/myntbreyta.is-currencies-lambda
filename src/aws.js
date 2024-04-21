@@ -1,8 +1,6 @@
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
-const { CloudFrontClient, CreateInvalidationCommand } = require("@aws-sdk/client-cloudfront");
 const awsConfig = { region: 'eu-west-1' };
 const s3 = new S3Client(awsConfig);
-const cloudfront = new CloudFrontClient(awsConfig);
 
 const saveToS3 = (payload, bucket, filename) => {
     return new Promise((resolve, reject) => {
