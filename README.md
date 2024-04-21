@@ -47,6 +47,7 @@ aws lambda create-function --function-name myntbreyta-is-currencies-lambda \
     --zip-file fileb://myntbreyta-is-currencies-lambda.zip \
     --handler index.handler \
     --runtime nodejs20.x \
+    --timeout 10 \
     --role arn:aws:iam::<AWS_ACCOUNT_ID>:role/myntbreyta-is-currencies-lambda
 ```
 
