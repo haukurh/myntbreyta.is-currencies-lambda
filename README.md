@@ -48,6 +48,7 @@ aws lambda create-function --function-name myntbreyta-is-currencies-lambda \
     --handler index.handler \
     --runtime nodejs20.x \
     --timeout 10 \
+    --memory-size 512 \
     --role arn:aws:iam::<AWS_ACCOUNT_ID>:role/myntbreyta-is-currencies-lambda
 ```
 
