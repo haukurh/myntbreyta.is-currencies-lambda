@@ -1,4 +1,5 @@
 const { XMLParser } = require('fast-xml-parser');
+const crypto = require('crypto');
 
 const validatePayload = (payload) => {
   if (!payload.hasOwnProperty('Rates')) {
@@ -32,6 +33,13 @@ const parseXml = (xml) => {
           rates[rate['CurrencyCode']] = rate['CurrencyRate'];
         }
       });
+
+      const hash = crypto
+        .createHash('md5')
+        .update(JSON.stringify(rates))
+        .digest('hex');
+      console.log('Currency rates hash: ' + hash);
+
       resolve(rates);
     } catch (e) {
       reject({
