@@ -25,7 +25,7 @@ jobs:
         run: yarn install --production
 
       - name: Zip the code for deployment
-        run: zip -r myntbreyta-is-currencies-lambda.zip . -x ".git/*"
+        run: zip -r myntbreyta-is-currencies-lambda.zip index.js src node_modules LICENSE
 
       - name: Deploy lambda code to AWS
         run: aws lambda update-function-code --function-name ${{ vars.LAMBDA_NAME }} --zip-file fileb://myntbreyta-is-currencies-lambda.zip
