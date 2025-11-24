@@ -3,18 +3,18 @@
 A small AWS lambda function that fetches currency rates in XML format from a credit-card vendor in Iceland,
 parses the data then stores it in an AWS S3 bucket for [myntbreyta.is](https://myntbreyta.is) to use.
 
-## ToDo
+## To-Do
 
 - [x] Validate env variables before starting
 
 ## Prerequisite
 
-### Create a AWS lambda function
+### Create an AWS lambda function
 
 Here I'm following the [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-awscli.html)
 and adjusting the commands to add the necessary permissions and variables.
 
-Create a AWS IAM role with a trust relationship with lambda
+Create an AWS IAM role with a trust relationship with lambda
 
 ```shell
 aws iam create-role --role-name myntbreyta-is-currencies-lambda --assume-role-policy-document '{"Version": "2012-10-17","Statement": [{ "Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"}, "Action": "sts:AssumeRole"}]}'
@@ -36,17 +36,17 @@ Prepare the code to create our new lambda
 
 ```shell
 yarn install --production
-zip -r myntbreyta-is-currencies-lambda.zip . -x ".git/*" -x ".idea/*"
+zip -r myntbreyta-is-currencies-lambda.zip . -x ".git/*"
 ```
 
-Create the lambda using the role we just created
+Create the lambda using the role we created
 
 ```shell
 aws lambda create-function --function-name myntbreyta-is-currencies-lambda \
     --environment '{"Variables":{"xml_url":"<XML_URL>","bucket":"<S3_BUCKET_ID>"}}' \
     --zip-file fileb://myntbreyta-is-currencies-lambda.zip \
     --handler index.handler \
-    --runtime nodejs20.x \
+    --runtime nodejs24.x \
     --timeout 10 \
     --memory-size 512 \
     --role arn:aws:iam::<AWS_ACCOUNT_ID>:role/myntbreyta-is-currencies-lambda
