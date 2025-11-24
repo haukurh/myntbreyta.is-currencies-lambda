@@ -5,9 +5,10 @@ const s3 = new S3Client(awsConfig);
 const saveToS3 = (payload, bucket, filename) => {
   return new Promise((resolve, reject) => {
     const expireDate = new Date();
-    expireDate.setHours(expireDate.getDate() + 1);
+    expireDate.setDate(expireDate.getDate() + 1);
     expireDate.setSeconds(expireDate.getSeconds() - 6);
     console.log('Uploading to S3...');
+    console.log('Setting cache-control to expire ' + expireDate.toISOString());
     const command = new PutObjectCommand({
       Body: JSON.stringify(payload),
       Bucket: bucket,
